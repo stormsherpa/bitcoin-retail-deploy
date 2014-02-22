@@ -12,6 +12,8 @@ fi
 
 "$VIRT_ENV/bin/pip" install -r requirements.txt
 
+"$VIRT_ENV/bin/pip" install https://github.com/skruger/bitcoin-python/archive/master.zip
+
 cd ../coinexchange-django
 
 "$VIRT_ENV/bin/python" setup.py install
