@@ -1,1 +1,4 @@
 target
+supervisord.log
+supervisord.pid
+supervisor.sock

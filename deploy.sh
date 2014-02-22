@@ -1,4 +1,16 @@
-#!/bin/bash
+#!/bin/bash -xe
+
+if [ "x$COINEXCHANGE_SRC" = "x" ]; then
+    echo "Using default location for coinexchange source."
+    COINEXCHANGE_SRC="../coinexchange-django"
+fi
+
+echo Coinexchange application location: $COINEXCHANGE_SRC
+
+if [ ! -f "$COINEXCHANGE_SRC/setup.py" ]; then
+    echo "Directory '$COINEXCHANGE_SRC' does not contain setup.py and is invalid."
+    exit 1
+fi
 
 TARGET_DIR="`pwd`/target"
 
@@ -14,7 +26,7 @@ fi
 
 "$VIRT_ENV/bin/pip" install https://github.com/skruger/bitcoin-python/archive/master.zip
 
-cd ../coinexchange-django
+cd "$COINEXCHANGE_SRC"
 
 "$VIRT_ENV/bin/python" setup.py install
 
