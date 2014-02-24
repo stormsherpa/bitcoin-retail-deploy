@@ -1,1 +1,2 @@
 supervisor
+pip>=1.2
