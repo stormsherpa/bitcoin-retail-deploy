@@ -26,9 +26,40 @@ fi
 
 "$VIRT_ENV/bin/pip" install https://github.com/skruger/bitcoin-python/archive/master.zip
 
-cd "$COINEXCHANGE_SRC"
+pushd "$COINEXCHANGE_SRC"
 
 "$VIRT_ENV/bin/python" setup.py install
 
+popd
+
+CONFIG_DIR="../coinexchange-config"
+
+if [ -d "$CONFIG_DIR" ]; then
+    pushd "$CONFIG_DIR"
+        "$VIRT_ENV/bin/python" setup.py install
+    popd
+fi
+
+echo "Installed packages..."
 "$VIRT_ENV/bin/pip" list
+
+pushd "$TARGET_DIR"
+mkdir -p "$TARGET_DIR/static_files"
+"$VIRT_ENV/bin/coinexchange-manage.py" collectstatic -c --noinput
+
+if [ ! -d "bitcoin-0.8.6-linux" ]; then
+    wget "http://downloads.sourceforge.net/project/bitcoin/Bitcoin/bitcoin-0.8.6/bitcoin-0.8.6-linux.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fbitcoin%2F&ts=1393306292&use_mirror=softlayer-dal" -O bitcoin-0.8.6-linux.tar.gz
+    tar zxf bitcoin-0.8.6-linux.tar.gz
+fi
+
+if [ ! -d "rabbitmq_server-3.2.3" ]; then
+    wget "http://www.rabbitmq.com/releases/rabbitmq-server/v3.2.3/rabbitmq-server-generic-unix-3.2.3.tar.gz" -O rabbitmq-server-generic-unix-3.2.3.tar.gz
+    tar zxf rabbitmq-server-generic-unix-3.2.3.tar.gz
+fi
+
+pushd rabbitmq_server-3.2.3
+    
+popd
+
+popd
 
