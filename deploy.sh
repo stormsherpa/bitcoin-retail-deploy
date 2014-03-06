@@ -14,6 +14,8 @@ fi
 
 TARGET_DIR="`pwd`/target"
 
+LOGS_DIR="`pwd`/logs"
+
 VIRT_ENV="$TARGET_DIR/virtualenv"
 
 mkdir -p "$TARGET_DIR"
@@ -24,7 +26,8 @@ fi
 
 "$VIRT_ENV/bin/pip" install -r requirements.txt
 
-"$VIRT_ENV/bin/pip" install https://github.com/skruger/bitcoin-python/archive/master.zip
+"$VIRT_ENV/bin/pip" install --upgrade https://github.com/skruger/bitcoin-python/archive/master.zip
+"$VIRT_ENV/bin/pip" install --upgrade https://github.com/skruger/coinbase_python/archive/master.zip
 
 pushd "$COINEXCHANGE_SRC"
 
@@ -62,4 +65,19 @@ pushd rabbitmq_server-3.2.3
 popd
 
 popd
+
+echo "Installing crontab"
+NOW=`date`
+
+cat > local.crontab  << EOF
+# Installed: $NOW
+# Min Hr Dom  Mo Dow
+*/5 * * * *  "$VIRT_ENV/bin//coinexchange-manage.py" process_coinbase_payout >> "$LOGS_DIR/coinbase_payout.log"
+
+EOF
+
+crontab local.crontab
+
+echo "Installed crontab from local.crontab:"
+crontab -l
 
