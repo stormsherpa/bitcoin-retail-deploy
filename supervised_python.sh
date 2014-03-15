@@ -1,6 +1,6 @@
 #!/bin/bash
 
-apps="uWSGI bitcoind_worker poll_pos_transactions"
+apps="uWSGI coinbase_recv_callbacks pay_merchant_batches"
 
 for a in "$apps"; do
     echo Performing $1 on $a

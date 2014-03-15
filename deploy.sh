@@ -72,7 +72,7 @@ NOW=`date`
 cat > local.crontab  << EOF
 # Installed: $NOW
 # Min Hr Dom  Mo Dow
-*/5 * * * *  "$VIRT_ENV/bin//coinexchange-manage.py" process_coinbase_payout >> "$LOGS_DIR/coinbase_payout.log"
+#*/5 * * * *  "$VIRT_ENV/bin//coinexchange-manage.py" process_coinbase_payout >> "$LOGS_DIR/coinbase_payout.log"
 
 EOF
 
